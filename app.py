@@ -14,7 +14,7 @@ def index():
 def home():
     return "ok"
 
-@app.route("/home1")
+@app.route("/home2")
 def home():
     return "ok"
 
