@@ -14,10 +14,6 @@ def index():
 def home():
     return "ok"
 
-@app.route("/home2")
-def home():
-    return "ok"
-
 if __name__ == '__main__':
     app.run()
     
