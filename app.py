@@ -1,4 +1,4 @@
-from flask import Flask,render_template, request,redirect, url_for
+from flask import Flask, make_response,render_template, request,redirect, url_for,json,jsonify
 
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ def home():
 
 @app.route('/user/')
 @app.route('/user/<username>')
-def show_user(username=None):
+def show_user(username):
     age = request.args.get("age",'nil')
     return render_template('user.html',username = username,age = age)
 
@@ -36,7 +36,46 @@ def submit():
         return redirect(url_for('show_user', username=username, age=age))
     return render_template('form.html')
 
+#测试hook 
+@app.route("/test_hook")
+def test_hook():
+    print("do_something")
+    # a=1/0
+    return "ok"
+
+@app.before_request
+def do_something_befor():
+    print("requesr_befor",request.url)
+#异常处理
+@app.teardown_request
+def do_something_teardown(excetion):
+    print("requesr_teardown",excetion,request.url)
+
+@app.after_request
+def do_something_after(response):
+    print("requesr_after",request.url)
+    return response
+
+#重定向
+@app.route('/bili')
+def bili():
+    return redirect('https://www.bilibili.com/')
+
+#响应格式
+@app.route('/rejson')
+def rejson():
+    data={
+        'name':'heys',
+        'age':'101'
+    }
+    # response=make_response(json.dumps(data))     #make_response手动构建一个http响应对象
+    # response.mimetype='application/json'         #设置响应头中的 Content-Type 为 application/json。
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run()
+
+
+
+#http://192.168.1.15/
     
