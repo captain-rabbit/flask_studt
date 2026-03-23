@@ -13,7 +13,7 @@ def index():
     return render_template('home.html')
 
 
-@app.route("/home")
+@app.route("/flask/home")
 def home():
     return "ok1111"
 
